@@ -32,6 +32,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = MediaQuery.of(context).size.width < 600;
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       extendBodyBehindAppBar: true,
@@ -39,30 +41,40 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppTheme.backgroundColor.withOpacity(0.8),
         elevation: 0,
         title: Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(left: isMobile ? 0 : 20),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               SvgPicture.asset(
                 'assets/images/logo.svg', // SVG Logo
-                height: 40,
+                height: isMobile ? 32 : 40,
               ),
               const SizedBox(width: 12),
-              Text(
-                'Prism Matrix',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: Colors.white,
+              if (!isMobile) // Hide text on very small screens or just shrink it? keeping it for brand but maybe smaller
+                Text(
+                  'Prism Matrix',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.white,
+                  ),
+                )
+              else 
+                 Text(
+                  'Prism Matrix',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18, // Smaller font on mobile
+                    color: Colors.white,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
         actions: [
-          _NavBarItem(title: 'Products', onTap: () => _scrollTo(_productsKey)),
+          if (!isMobile) _NavBarItem(title: 'Products', onTap: () => _scrollTo(_productsKey)),
           _NavBarItem(title: 'Contact', onTap: () => _scrollTo(_contactKey)),
-          const SizedBox(width: 40),
+          SizedBox(width: isMobile ? 20 : 40),
         ],
       ),
       body: SingleChildScrollView(

@@ -30,6 +30,7 @@ class RoadmapSection extends StatelessWidget {
           
           isMobile
               ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch, // Ensure cards fill width
                   children: [
                     _buildCard('Transportation App', 'Smart fleet management and tracking.', Icons.directions_bus, 0),
                     const SizedBox(height: 20),
