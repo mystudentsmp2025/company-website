@@ -1,0 +1,12 @@
+[build]
+  # Basic build settings
+  base = "/"
+  publish = "build/web"
+  # Logic: Clone Flutter (stable), add to PATH, and build web release
+  command = "git clone https://github.com/flutter/flutter.git -b stable --depth 1 _flutter && export PATH=\"$PATH:`pwd`/_flutter/bin\" && flutter doctor -v && flutter build web --release"
+
+[[redirects]]
+  # Redirect all routes to index.html for Flutter SPA routine
+  from = "/*"
+  to = "/index.html"
+  status = 200
