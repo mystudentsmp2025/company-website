@@ -4,6 +4,7 @@ import 'package:company_website/ui/sections/hero_section.dart';
 import 'package:company_website/ui/sections/products_section.dart';
 import 'package:company_website/ui/sections/roadmap_section.dart';
 import 'package:company_website/ui/sections/contact_section.dart';
+import 'package:company_website/ui/pages/pricing_page.dart'; // Added import
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,37 +43,59 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         title: Padding(
           padding: EdgeInsets.only(left: isMobile ? 0 : 20),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                'assets/images/logo.svg', // SVG Logo
-                height: isMobile ? 32 : 40,
-              ),
-              const SizedBox(width: 12),
-              if (!isMobile) // Hide text on very small screens or just shrink it? keeping it for brand but maybe smaller
-                Text(
-                  'Prism Matrix',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Colors.white,
-                  ),
-                )
-              else 
-                 Text(
-                  'Prism Matrix',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18, // Smaller font on mobile
-                    color: Colors.white,
-                  ),
+          child: InkWell(
+            onTap: () {
+              if (_scrollController.hasClients) {
+                _scrollController.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 800),
+                  curve: Curves.easeInOutCubic,
+                );
+              }
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/logo.svg', // SVG Logo
+                  height: isMobile ? 32 : 40,
                 ),
-            ],
+                const SizedBox(width: 12),
+                if (!isMobile) // Hide text on very small screens or just shrink it? keeping it for brand but maybe smaller
+                  Text(
+                    'Prism Matrix',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
+                  )
+                else 
+                   Text(
+                    'Prism Matrix',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18, // Smaller font on mobile
+                      color: Colors.white,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
         actions: [
           if (!isMobile) _NavBarItem(title: 'Products', onTap: () => _scrollTo(_productsKey)),
+          _NavBarItem(title: 'Pricing', onTap: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PricingPage()),
+            );
+            if (result == 'contact') {
+              // Wait for frame to ensure page is settled (though usually immediate logic works)
+              // Just call scroll directly as we are back on this page
+              _scrollTo(_contactKey);
+            }
+          }),
           _NavBarItem(title: 'Contact', onTap: () => _scrollTo(_contactKey)),
           SizedBox(width: isMobile ? 20 : 40),
         ],
