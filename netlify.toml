@@ -1,0 +1,20 @@
+[build]
+  # Basic build settings
+  base = "/"
+  publish = "build/web"
+  # Logic: 
+  # 1. Create .env from Netlify Environment Variables
+  # 2. Clone Flutter
+  # 3. Build Web Release (Flutter will copy .env to assets if present)
+  command = "echo \"SUPABASE_URL=$SUPABASE_URL\" > .env && echo \"SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY\" >> .env && git clone https://github.com/flutter/flutter.git -b stable --depth 1 _flutter && export PATH=\"$PATH:`pwd`/_flutter/bin\" && flutter doctor -v && flutter build web --release"
+
+[[redirects]]
+  # Redirect all routes to index.html for Flutter SPA routine
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  # CRITICAL: Disable Netlify's secret scanning because we explicitly 
+  # generate a .env file containing the keys for the client-side app.
+  SECRETS_SCAN_ENABLED = "false"
