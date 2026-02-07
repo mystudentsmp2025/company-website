@@ -6,7 +6,7 @@
   # 1. Create .env from Netlify Environment Variables
   # 2. Clone Flutter
   # 3. Build Web Release (Flutter will copy .env to assets if present)
-  command = "echo \"SUPABASE_URL=$SUPABASE_URL\" > .env && echo \"SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY\" >> .env && git clone https://github.com/flutter/flutter.git -b stable --depth 1 _flutter && export PATH=\"$PATH:`pwd`/_flutter/bin\" && flutter doctor -v && flutter build web --release"
+  command = "echo \"SUPABASE_URL=$SUPABASE_URL\" > .env && echo \"SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY\" >> .env && if [ -d \"_flutter\" ]; then cd _flutter && git pull && cd ..; else git clone https://github.com/flutter/flutter.git -b stable --depth 1 _flutter; fi && export PATH=\"$PATH:`pwd`/_flutter/bin\" && flutter doctor -v && flutter build web --release"
 
 [[redirects]]
   # Redirect all routes to index.html for Flutter SPA routine
