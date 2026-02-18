@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:company_website/ui/theme/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:company_website/ui/widgets/video_player_widget.dart';
 
 class ProductsSection extends StatelessWidget {
   const ProductsSection({super.key});
@@ -153,37 +154,14 @@ class ProductsSection extends StatelessWidget {
   }
 
   Widget _buildVideoPlaceholder() {
-    return AspectRatio(
-      aspectRatio: 16 / 9,
+    return Center(
       child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withOpacity(0.1)),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF2D8CFF).withOpacity(0.2), // Electric Blue glow
-              blurRadius: 40,
-              offset: const Offset(0, 20),
-            ),
-          ],
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Icon(Icons.play_circle_fill, size: 80, color: Colors.white.withOpacity(0.9)),
-            Positioned(
-              bottom: 20,
-              child: Text(
-                'Watch Demo',
-                style: GoogleFonts.inter(color: Colors.white70),
-              ),
-            ),
-          ],
+        constraints: const BoxConstraints(maxWidth: 900),
+        child: const VideoPlayerWidget(
+          videoUrl: 'https://jqpahjeymfukkzwiapog.supabase.co/storage/v1/object/public/company-website/myStudent_Ecosystem_Explained.mp4',
         ),
       ),
-    ).animate().fadeIn(duration: 800.ms).scale(begin: const Offset(0.95, 0.95));
+    );
   }
 }
 
